@@ -4,7 +4,7 @@
 @SuppressWarnings("unused")
 public class DecimalPlus {
 
-    double value = 0;
+    private double value = 0;
     private int sign = 1;
 
     /**
@@ -37,9 +37,19 @@ public class DecimalPlus {
         if(sign>1||sign<-1)throw new IllegalArgumentException("Sign must be 1, 0 or -1");
         else this.sign = sign;
     }
+    public int getSign() {
+        return this.sign;
+    }
+
+    public double getValue() {
+        return this.value;
+    }
+    public void setValue(double value) {
+        this.value = value;
+    }
 
     /**
-     * Increases current decimal value by other decimal
+     * Increases current decimal by value
      */
     public void add(DecimalPlus decimal){
         if (this.sign != 0 && decimal.sign == this.sign){
@@ -63,17 +73,36 @@ public class DecimalPlus {
         add(new DecimalPlus(value));
     }
     /**
-     * Decreases current decimal value by other decimal
-     * (just add method with flipped sign)
+     * Decreases current decimal by value
      */
     public void sub(DecimalPlus decimal){
         decimal.flipSign();
         add(decimal);
     }
-    public void sub(double decimal){
-        add(-decimal);
+    public void sub(double value){
+        add(-value);
     }
-    
+    /**
+     * Multiplies current decimal by value
+     */
+    public void mul(DecimalPlus decimal){
+        this.value += decimal.value;
+        this.sign *= decimal.sign;
+    }
+    public void mul(double value){
+        mul(new DecimalPlus(value));
+    }
+    /**
+     * Divides current decimal by value
+     */
+    public void div(DecimalPlus decimal){
+        this.value -= decimal.value;
+        this.sign *= decimal.sign;
+    }
+    public void div(double value){
+        div(new DecimalPlus(value));
+    }
+
     private double addFormula(double a, double b){
         if(Math.abs(a-b)>300){
             return Math.max(a,b);
